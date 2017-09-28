@@ -29,7 +29,7 @@ var Mark = {
 
     // Get the value of a number or size of an array. This is a helper function for several pipes.
     _size: function (a) {
-        return a instanceof Array ? a.length : (a || 0);
+        return Array.isArray(a) ? a.length : (a || 0);
     },
 
     // This object represents an iteration. It has an index and length.
@@ -81,7 +81,7 @@ var Mark = {
             j,
             opts;
 
-        if (result instanceof Array) {
+        if (Array.isArray(result)) {
             result = "";
             j = ctx.length;
 
@@ -292,7 +292,7 @@ Mark.up = function (template, context, options) {
         }
 
         // Evaluating an array, which might be a block expression.
-        else if (ctx instanceof Array) {
+        else if (Array.isArray(ctx)) {
             result = this._eval(ctx, filters, child);
         }
 
@@ -307,7 +307,7 @@ Mark.up = function (template, context, options) {
         }
 
         // Evaluating special case: if the resulting context is actually an Array
-        if (result instanceof Array) {
+        if (Array.isArray(result)) {
             result = this._eval(result, filters, child);
         }
 
