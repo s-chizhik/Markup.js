@@ -152,15 +152,24 @@ Mark.parseTags = function (template) {
     return template.match(re) || [];
 };
 
-// Inject a template string with contextual data and return a new string.
 Mark.up = function (template, context, options) {
+    return Mark.evaluate(template, Mark.parseTags(template), context, options);
+};
+
+Mark.compile = function(template, options) {
+    return function(context) {
+        var tags = Mark.parseTags(template);
+        return Mark.evaluate(template, tags, context, options);
+    }
+};
+
+// Inject a template string with contextual data and return a new string.
+Mark.evaluate = function (template, tags, context, options) {
     context = context || {};
     options = options || {};
 
     // Match all tags like "{{...}}".
-    var // All tags in the template.
-        tags = Mark.parseTags(template),
-        // The tag being evaluated, e.g. "{{hamster|dance}}".
+    var // The tag being evaluated, e.g. "{{hamster|dance}}".
         tag,
         // The expression to evaluate inside the tag, e.g. "hamster|dance".
         prop,
