@@ -147,15 +147,19 @@ var Mark = {
     }
 };
 
+Mark.parseTags = function (template) {
+    var re = /{{(.+?)}}/g;
+    return template.match(re) || [];
+};
+
 // Inject a template string with contextual data and return a new string.
 Mark.up = function (template, context, options) {
     context = context || {};
     options = options || {};
 
     // Match all tags like "{{...}}".
-    var re = /{{(.+?)}}/g,
-        // All tags in the template.
-        tags = template.match(re) || [],
+    var // All tags in the template.
+        tags = Mark.parseTags(template),
         // The tag being evaluated, e.g. "{{hamster|dance}}".
         tag,
         // The expression to evaluate inside the tag, e.g. "hamster|dance".
@@ -233,7 +237,7 @@ Mark.up = function (template, context, options) {
             result = this._bridge(template, token);
             tag = result[0];
             child = result[1];
-            i += tag.match(re).length - 1; // fast forward
+            i += Mark.parseTags(tag).length - 1; // fast forward
         }
 
         // Skip "else" tags. These are pulled out in _test().
