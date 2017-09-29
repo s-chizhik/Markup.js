@@ -102,7 +102,7 @@ var Mark = {
     // Process the contents of an IF or IF/ELSE block.
     _test: function (bool, child, context, options) {
         // Process the child string, then split it into the IF and ELSE parts.
-        var str = Mark.up(child, context, options).split(/\{\{\s*else\s*\}\}/);
+        var str = Mark.up(child, context, options).split(/{{\s*else\s*}}/);
 
         // Return the IF or ELSE part. If no ELSE, return an empty string.
         return (bool === false ? str[1] : str[0]) || "";
@@ -153,7 +153,7 @@ Mark.up = function (template, context, options) {
     options = options || {};
 
     // Match all tags like "{{...}}".
-    var re = /\{\{(.+?)\}\}/g,
+    var re = /{{(.+?)}}/g,
         // All tags in the template.
         tags = template.match(re) || [],
         // The tag being evaluated, e.g. "{{hamster|dance}}".
@@ -237,7 +237,7 @@ Mark.up = function (template, context, options) {
         }
 
         // Skip "else" tags. These are pulled out in _test().
-        if (/^\{\{\s*else\s*\}\}$/.test(tag)) {
+        if (/^{{\s*else\s*}}$/.test(tag)) {
             continue;
         }
 
@@ -436,7 +436,7 @@ Mark.pipes = {
         return num && (+num & 1) === 1 ? num : false;
     },
     number: function (str) {
-        return parseFloat(str.replace(/[^\-\d\.]/g, ""));
+        return parseFloat(str.replace(/[^\-\d.]/g, ""));
     },
     url: function (str) {
         return encodeURI(str);
