@@ -165,8 +165,8 @@ Mark.compile = function(template, options) {
 
 // Inject a template string with contextual data and return a new string.
 Mark.evaluate = function (template, tags, context, options) {
-    context = context || {};
-    options = options || {};
+    context = context !== undefined ? context : {};
+    options = options !== undefined ? options : {};
 
     // Match all tags like "{{...}}".
     var // The tag being evaluated, e.g. "{{hamster|dance}}".
